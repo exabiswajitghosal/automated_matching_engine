@@ -17,7 +17,7 @@ def simplify_xml_attributes(filename,filetype):
     # Iterate through each Attribute and remove unnecessary elements
     for attribute in root.findall('.//Attribute'):
         for elem in list(attribute):
-            if elem.tag not in ['Name', 'DataType', 'PrimaryKey', 'ForeignKey']:
+            if elem.tag not in ['Name', 'DataType', 'PrimaryKey']:
                 attribute.remove(elem)
 
     # Write the modified XML back to a file
@@ -91,6 +91,7 @@ def read_target_data():
     # Directory containing the files
     directory = './data/target/'
 
+    target_data = ""
     # Loop through each file in the directory
     for filename in os.listdir(directory):
         file_path = os.path.join(directory, filename)
@@ -98,5 +99,5 @@ def read_target_data():
         # Check if the file is an XML file
         if filename.endswith('.xml'):
             with open(file_path, 'r') as file:
-                target_data = file.read().strip()
+                target_data += file.read().strip()
     return target_data

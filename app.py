@@ -20,15 +20,31 @@ def upload_target_files():
     if 'files' not in request.files:
         return jsonify({'error': 'No files part in the request'}), 400
 
-    file = request.files['files']
+    files = request.files.getlist('files')
+
+    # Check if any files are selected
+    if len(files) == 0:
+        return jsonify({'error': 'No files selected'}), 400
+
+    saved_files = []
     upload_folder_path = 'uploads/target'
     if os.path.exists(upload_folder_path):
         shutil.rmtree(upload_folder_path)
     os.makedirs(upload_folder_path)
-    file.save(f"{upload_folder_path}/{file.filename}")
-    utilities.simplify_xml_attributes(filename=file.filename, filetype='target')
+    if os.path.exists('data/target'):
+        shutil.rmtree('data/target')
+    for file in files:
+        if file.filename == '':
+            return jsonify({'error': 'One or more files have no filename'}), 400
+        # Check if the uploaded file is an XML file
+        if not file.filename.lower().endswith('.xml'):
+            return jsonify({'error': 'Only XML files are allowed'}), 400
+        # Save the file or process it further
+        file.save(f"{upload_folder_path }/{file.filename}")
+        utilities.simplify_xml_attributes(filename=file.filename, filetype='target')
+        saved_files.append(file.filename)
 
-    return jsonify({'message': 'Files successfully uploaded', 'files': file.filename}), 200
+    return jsonify({'message': 'Files successfully uploaded', 'files': saved_files}), 200
 
 
 
@@ -54,7 +70,9 @@ def upload_source_files():
     for file in files:
         if file.filename == '':
             return jsonify({'error': 'One or more files have no filename'}), 400
-
+            # Check if the uploaded file is an XML file
+        if not file.filename.lower().endswith('.xml'):
+            return jsonify({'error': 'Only XML files are allowed'}), 400
         # Save the file or process it further
         file.save(f"{upload_folder_path}/{file.filename}")
         utilities.simplify_xml_attributes(filename=file.filename,filetype='source')
@@ -70,6 +88,9 @@ def upload_previous_files():
         return jsonify({'error': 'No files part in the request'}), 400
 
     file = request.files['files']
+    # Check if the uploaded file is an XML file
+    if not file.filename.lower().endswith('.csv'):
+        return jsonify({'error': 'Only XML files are allowed'}), 400
     upload_folder_path = 'data/previous_file'
     if os.path.exists(upload_folder_path):
         shutil.rmtree(upload_folder_path)
