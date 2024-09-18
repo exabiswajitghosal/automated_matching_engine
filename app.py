@@ -37,8 +37,8 @@ def upload_target_files():
         if file.filename == '':
             return jsonify({'error': 'One or more files have no filename'}), 400
         # Check if the uploaded file is an XML file
-        if not file.filename.lower().endswith('.xml'):
-            return jsonify({'error': 'Only XML files are allowed'}), 400
+        # if not file.filename.lower().endswith('.xml'):
+        #     return jsonify({'error': 'Only XML files are allowed'}), 400
         # Save the file or process it further
         file.save(f"{upload_folder_path }/{file.filename}")
         utilities.simplify_xml_attributes(filename=file.filename, filetype='target')
@@ -70,9 +70,9 @@ def upload_source_files():
     for file in files:
         if file.filename == '':
             return jsonify({'error': 'One or more files have no filename'}), 400
-            # Check if the uploaded file is an XML file
-        if not file.filename.lower().endswith('.xml'):
-            return jsonify({'error': 'Only XML files are allowed'}), 400
+        # Check if the uploaded file is an XML file
+        # if not file.filename.lower().endswith('.xml'):
+        #     return jsonify({'error': 'Only XML files are allowed'}), 400
         # Save the file or process it further
         file.save(f"{upload_folder_path}/{file.filename}")
         utilities.simplify_xml_attributes(filename=file.filename,filetype='source')
@@ -105,6 +105,7 @@ def upload_previous_files():
 def generate_data():
     try:
         response = compare_source_target()
+        print(response)
         if not response:
             return jsonify({"message": "No Data Found From the files"}), 200
         return response, 200
