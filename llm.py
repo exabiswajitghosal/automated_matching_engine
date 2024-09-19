@@ -38,7 +38,7 @@ def compare_source_target():
         f"'Target Key Indicator', 'Source Table', 'Source Field Name', 'Source Field Datatype',  'One-to-One', 'Mapping Logic"
         f"Only include matching attributes. Follow these following conditions."
         f"1) Mark 'One-to-One' as 'YES' if an attribute matches in one source file, otherwise 'NO'. "
-        f"2) 'Target Datatype Transforms' should show 'YES' if datatype changes from source to target, or 'NO'. "
+        f"2) 'Target Datatype Transforms' should show 'CHANGED' if datatype changes from source to target,  'NO CHANGE' if the data type remains same,and keep it blank if there is no match. "
         f"3) 'Target Key Indicator' should be 'NO' if the primary key value of the file is 'na',' ','NULL' otherwise 'YES'. "
         f"4) Leave the 'Mapping Logic' field blank."
         f"Do not include column names in the output."
