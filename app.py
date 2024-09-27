@@ -90,7 +90,7 @@ def upload_previous_files():
     file = request.files['files']
     # Check if the uploaded file is an XML file
     if not file.filename.lower().endswith('.csv'):
-        return jsonify({'error': 'Only XML files are allowed'}), 400
+        return jsonify({'error': 'Only CSV files are allowed'}), 400
     upload_folder_path = 'data/previous_file'
     if os.path.exists(upload_folder_path):
         shutil.rmtree(upload_folder_path)
